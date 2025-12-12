@@ -4,17 +4,9 @@ import Lobby from './components/Lobby';
 import GameRoom from './components/GameRoom';
 import './App.css';
 
-// Connect to backend
-// In production, we use the env variable. In dev, we rely on the proxy or localhost.
-// FALLBACK: We hardcode the Render URL here just in case the Env Var fails.
+// Define socket outside to keep it persistent, but initialize it lazily if needed
+let socket;
 const SERVER_URL = 'https://impostergame-vr9s.onrender.com';
-
-console.log('--- DEBUG VERSION: 5 ---');
-console.log('Target Server:', SERVER_URL);
-
-const socket = io(SERVER_URL, {
-  transports: ['websocket', 'polling'] // Force websocket/polling
-});
 
 function App() {
   const [room, setRoom] = useState(null);
@@ -22,9 +14,20 @@ function App() {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
+    // Initialize socket connection inside useEffect to ensure client-side execution
+    console.log('--- DEBUG VERSION: 7 (Inside Effect) ---');
+    console.log('Connecting to:', SERVER_URL);
+
+    if (!socket) {
+        socket = io(SERVER_URL, {
+            transports: ['websocket', 'polling'],
+            withCredentials: true
+        });
+    }
+
     socket.on('connect', () => {
       setConnected(true);
-      console.log('Connected to server');
+      console.log('Connected to server with ID:', socket.id);
     });
 
     socket.on('roomCreated', (newRoom) => {
