@@ -5,7 +5,10 @@ import GameRoom from './components/GameRoom';
 import './App.css';
 
 // Connect to backend
-const socket = io('/', {
+// In production, we use the env variable. In dev, we rely on the proxy or localhost.
+const SERVER_URL = import.meta.env.VITE_SERVER_URL || (import.meta.env.PROD ? 'YOUR_BACKEND_URL_HERE' : '/');
+
+const socket = io(SERVER_URL, {
   path: '/socket.io',
 });
 
