@@ -6,10 +6,14 @@ import './App.css';
 
 // Connect to backend
 // In production, we use the env variable. In dev, we rely on the proxy or localhost.
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || (import.meta.env.PROD ? 'YOUR_BACKEND_URL_HERE' : '/');
+// FALLBACK: We hardcode the Render URL here just in case the Env Var fails.
+const SERVER_URL = 'https://impostergame-vr9s.onrender.com';
+
+console.log('Attempting to connect to server at:', SERVER_URL);
 
 const socket = io(SERVER_URL, {
   path: '/socket.io',
+  transports: ['websocket', 'polling'] // Force websocket/polling
 });
 
 function App() {
