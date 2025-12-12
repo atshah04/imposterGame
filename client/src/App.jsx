@@ -98,6 +98,12 @@ function App() {
 
   return (
     <div className="App">
+      {!connected && (
+        <div style={{backgroundColor: '#ff9800', color: 'black', padding: '5px', fontSize: '0.8em'}}>
+            Connecting to server at: {SERVER_URL}... <br/>
+            (If this takes too long, check your VITE_SERVER_URL setting in Vercel)
+        </div>
+      )}
       {error && <div className="error-banner" style={{backgroundColor: 'red', color: 'white', padding: '10px'}}>{error}</div>}
       
       {!room ? (

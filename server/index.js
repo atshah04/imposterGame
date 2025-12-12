@@ -220,8 +220,16 @@ io.on('connection', (socket) => {
 
 // Handle React routing, return all requests to React app
 if (process.env.NODE_ENV === 'production') {
+  const clientBuildPath = path.join(__dirname, '../client/dist');
+  app.use(express.static(clientBuildPath));
+  
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+    const indexFile = path.join(clientBuildPath, 'index.html');
+    if (require('fs').existsSync(indexFile)) {
+        res.sendFile(indexFile);
+    } else {
+        res.status(404).send('Client build not found. If you are using split deployment, this is expected for the root URL.');
+    }
   });
 }
 
