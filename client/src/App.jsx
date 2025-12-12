@@ -9,10 +9,10 @@ import './App.css';
 // FALLBACK: We hardcode the Render URL here just in case the Env Var fails.
 const SERVER_URL = 'https://impostergame-vr9s.onrender.com';
 
-console.log('Attempting to connect to server at:', SERVER_URL);
+console.log('--- DEBUG VERSION: 5 ---');
+console.log('Target Server:', SERVER_URL);
 
 const socket = io(SERVER_URL, {
-  path: '/socket.io',
   transports: ['websocket', 'polling'] // Force websocket/polling
 });
 
